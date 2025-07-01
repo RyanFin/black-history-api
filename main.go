@@ -60,14 +60,37 @@ func init() {
 func main() {
 	r := gin.Default()
 
+	// Manual CORS middleware
+	r.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	})
+
 	r.GET("/figures", getAllFigures)
 	r.GET("/figures/:id", getFigureByID)
 	r.POST("/figures", createFigure)
 	r.PUT("/figures/:id", updateFigure)
 	r.DELETE("/figures/:id", deleteFigure)
 
-	log.Println("🚀 Server running on http://localhost:8080")
-	r.Run(":8080")
+	// Handle 404s with CORS
+	r.NoRoute(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization")
+
+		c.JSON(404, gin.H{"error": "Not found"})
+	})
+
+	log.Println("🚀 Server running on http://0.0.0.0:8080")
+	r.Run("0.0.0.0:8080")
+
 }
 
 func getAllFigures(c *gin.Context) {
