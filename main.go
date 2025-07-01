@@ -106,6 +106,14 @@ func main() {
 		c.Next()
 	})
 
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome to the Black History API",
+		})
+	})
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "ok"})
+	})
 	r.GET("/figures", getAllFigures)
 	r.GET("/figures/:id", getFigureByID)
 	r.POST("/figures", createFigure)
