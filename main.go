@@ -98,7 +98,13 @@ func main() {
 	})
 
 	log.Println("🚀 Server running on http://0.0.0.0:8080")
-	r.Run("0.0.0.0:8080")
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // fallback for local
+	}
+	r.Run(":" + port)
+	// r.Run("0.0.0.0:8080")
 
 }
 
