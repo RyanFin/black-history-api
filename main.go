@@ -69,6 +69,10 @@ func init() {
 	dbName := os.Getenv("MONGO_DB_NAME")
 	collName := os.Getenv("MONGODB_COLLECTION")
 
+	log.Println("🔍 Mongo URI:", uri)
+	log.Println("🔍 DB Name:", dbName)
+	log.Println("🔍 Collection:", collName)
+
 	if uri == "" || dbName == "" || collName == "" {
 		log.Fatal("❌ Environment variables are missing")
 	}
