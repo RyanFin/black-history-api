@@ -58,6 +58,15 @@ func init() {
 }
 
 func main() {
+
+	// Only load .env locally
+	if os.Getenv("GIN_MODE") != "release" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
+
 	r := gin.Default()
 
 	// Manual CORS middleware
