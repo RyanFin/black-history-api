@@ -27,10 +27,42 @@ type HistoricalFigure struct {
 
 var collection *mongo.Collection
 
+// func init() {
+// 	err := godotenv.Load()
+// 	if err != nil {
+// 		log.Fatal("❌ Error loading .env file:", err)
+// 	}
+
+// 	uri := os.Getenv("MONGO_DB_ATLAS_URI")
+// 	dbName := os.Getenv("MONGO_DB_NAME")
+// 	collName := os.Getenv("MONGODB_COLLECTION")
+
+// 	if uri == "" || dbName == "" || collName == "" {
+// 		log.Fatal("❌ Environment variables are missing")
+// 	}
+
+// 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
+// 	if err != nil {
+// 		log.Fatal("❌ Mongo client creation failed:", err)
+// 	}
+
+// 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+// 	defer cancel()
+
+// 	if err := client.Connect(ctx); err != nil {
+// 		log.Fatal("❌ Mongo client connect failed:", err)
+// 	}
+
+// 	collection = client.Database(dbName).Collection(collName)
+// 	log.Println("✅ Connected to MongoDB Atlas")
+// }
+
 func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("❌ Error loading .env file:", err)
+	// Only load .env file locally
+	if os.Getenv("GIN_MODE") != "release" {
+		if err := godotenv.Load(); err != nil {
+			log.Println("⚠️ Could not load .env file (this is fine in production)")
+		}
 	}
 
 	uri := os.Getenv("MONGO_DB_ATLAS_URI")
@@ -58,14 +90,6 @@ func init() {
 }
 
 func main() {
-
-	// Only load .env locally
-	if os.Getenv("GIN_MODE") != "release" {
-		err := godotenv.Load()
-		if err != nil {
-			log.Fatal("Error loading .env file")
-		}
-	}
 
 	r := gin.Default()
 
