@@ -85,6 +85,7 @@ func init() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
+	log.Println("⏳ Connecting to MongoDB...")
 	if err := client.Connect(ctx); err != nil {
 		log.Fatal("❌ Mongo client connect failed:", err)
 	}
