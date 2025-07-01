@@ -121,14 +121,13 @@ func main() {
 		c.JSON(404, gin.H{"error": "Not found"})
 	})
 
-	log.Println("🚀 Server running on http://0.0.0.0:8080")
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080" // fallback for local
 	}
 	r.Run(":" + port)
 	// r.Run("0.0.0.0:8080")
+	log.Printf("🚀 Server running on %v:8080\n", port)
 
 }
 
